@@ -1,7 +1,6 @@
 provider "aws" {
   region = var.region
 }
-
 module "markerting_vpc" {
   source               = "./modules/vpc"
   vpc_name             = "Marketing-VPC"
