@@ -50,14 +50,15 @@ resource "aws_route" "pulic_route" {
 
 resource "aws_eip" "elastic_IP_address" {
   count = var.enable_NAT_gateway ? 1 : 0
-  vpc   = true
+
+  vpc = true
   tags = {
     Name = "${var.vpc_name}-vpc-natGateway-EIP"
   }
 }
 resource "aws_nat_gateway" "nat_gateway" {
   count         = var.enable_NAT_gateway ? 1 : 0
-  allocation_id = aws_eip.elastic_IP_address.id
+  allocation_id = aws_eip.elastic_IP_address[count.index].id
   subnet_id     = element(aws_subnet.public_subnet[*].id, 0)
 }
 resource "aws_route_table" "private_rt" {
