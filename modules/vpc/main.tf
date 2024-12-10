@@ -28,6 +28,7 @@ resource "aws_subnet" "private_subnet" {
 }
 
 resource "aws_internet_gateway" "igw" {
+  count  = var.enable_internet_gateway ? 1 : 0
   vpc_id = aws_vpc.main_vpc.id
   tags = {
     Name = "${var.vpc_name} igw"
