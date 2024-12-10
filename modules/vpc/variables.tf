@@ -22,3 +22,26 @@ variable "private_subnet_cidrs" {
   type        = list(string)
   description = "cidr values for private subnet"
 }
+
+variable "enable_NAT_gateway" {
+  type        = bool
+  description = "NAT gateway available or not"
+  default     = false
+}
+
+
+variable "vpc_peering" {
+  type        = bool
+  description = "VPC peering connection available or not"
+  default     = false
+}
+
+variable "peering_vpc_name" {
+  type        = string
+  description = "name for peering VPC"
+}
+
+variable "peer_vpc_id" {
+  type        = string
+  description = "peering vpc id"
+}
