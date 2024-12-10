@@ -28,7 +28,7 @@ resource "aws_subnet" "private_subnet" {
 }
 
 resource "aws_internet_gateway" "igw" {
-  count  = var.enable_internet_gateway ? 1 : 0
+  # count  = var.enable_internet_gateway ? 1 : 0
   vpc_id = aws_vpc.main_vpc.id
   tags = {
     Name = "${var.vpc_name} igw"
@@ -47,11 +47,6 @@ resource "aws_route" "pulic_route" {
   destination_cidr_block = "0.0.0.0/0"
   gateway_id             = aws_internet_gateway.igw.id
 }
-resource "aws_nat_gateway" "nat_gateway" {
-  count         = var.enable_NAT_gateway ? 1 : 0
-  allocation_id = aws_eip.elastic_IP_address.id
-  subnet_id     = element(aws_subnet.public_subnet[*].id, 0)
-}
 
 resource "aws_eip" "elastic_IP_address" {
   count = var.enable_NAT_gateway ? 1 : 0
@@ -59,9 +54,12 @@ resource "aws_eip" "elastic_IP_address" {
   tags = {
     Name = "${var.vpc_name}-vpc-natGateway-EIP"
   }
-
 }
-
+resource "aws_nat_gateway" "nat_gateway" {
+  count         = var.enable_NAT_gateway ? 1 : 0
+  allocation_id = aws_eip.elastic_IP_address.id
+  subnet_id     = element(aws_subnet.public_subnet[*].id, 0)
+}
 resource "aws_route_table" "private_rt" {
   count  = var.enable_NAT_gateway ? 1 : 0
   vpc_id = aws_vpc.main_vpc.id
@@ -125,7 +123,7 @@ resource "aws_network_acl_rule" "public_ssh_outbound" {
 
 # Allow all outbound traffic for public subnets
 resource "aws_network_acl_rule" "public_all_outbound" {
-  network_acl_id = aws_network_acl.public.id
+  network_acl_id = aws_network_acl.public_ACL.id
   rule_number    = 200
   protocol       = "-1" # All protocols
   rule_action    = "allow"
@@ -135,7 +133,7 @@ resource "aws_network_acl_rule" "public_all_outbound" {
 
 # Deny all other inbound traffic for public subnets
 resource "aws_network_acl_rule" "public_deny_all_inbound" {
-  network_acl_id = aws_network_acl.public.id
+  network_acl_id = aws_network_acl.public_ACL.id
   rule_number    = 300
   protocol       = "-1" # All protocols
   rule_action    = "deny"
@@ -143,8 +141,8 @@ resource "aws_network_acl_rule" "public_deny_all_inbound" {
   cidr_block     = "0.0.0.0/0"
 }
 
-resource "aws_subnet_network_acl_association" "subnet_network_acl" {
-  for_each       = aws_subnet.public_subnet
-  subnet_id      = each.value.id
-  network_acl_id = aws_network_acl.public_ACL.id
-}
+# resource "aws_subnet_network_acl_association" "subnet_network_acl" {
+#   for_each       = aws_subnet.public_subnet
+#   subnet_id      = each.value.id
+#   network_acl_id = aws_network_acl.public_ACL.id
+# }

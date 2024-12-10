@@ -23,11 +23,11 @@ variable "private_subnet_cidrs" {
   description = "cidr values for private subnet"
 }
 
-variable "enable_internet_gateway" {
-  type        = bool
-  description = "internet_gateway available or not"
-  default     = false
-}
+# variable "enable_internet_gateway" {
+#   type        = bool
+#   description = "internet_gateway available or not"
+#   default     = false
+# }
 variable "enable_NAT_gateway" {
   type        = bool
   description = "NAT gateway available or not"
