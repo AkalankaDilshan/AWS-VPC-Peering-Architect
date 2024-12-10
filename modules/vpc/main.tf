@@ -71,9 +71,9 @@ resource "aws_route_table" "private_rt" {
 
 resource "aws_route" "private_route" {
   count                  = var.enable_NAT_gateway ? 1 : 0
-  route_table_id         = aws_route_table.private_rt.id
+  route_table_id         = aws_route_table.private_rt[count.index].id
   destination_cidr_block = "0.0.0.0/0"
-  nat_gateway_id         = aws_nat_gateway.nat_gateway.id
+  nat_gateway_id         = aws_nat_gateway.nat_gateway[count.index].id
 }
 
 resource "aws_vpc_peering_connection" "peering_connection" {
