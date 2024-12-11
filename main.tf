@@ -48,7 +48,7 @@ module "marketing_instance" {
   allow_public_ip = true
   ebs_volume_size = 8
   ebs_volume_type = "gp2"
-  key_pair_name   = "dfghj"
+  key_pair_name   = "new-ec2-key"
 }
 
 module "financial_instance" {
@@ -60,5 +60,5 @@ module "financial_instance" {
   allow_public_ip = true
   ebs_volume_size = 8
   ebs_volume_type = "gp2"
-  key_pair_name   = "dfghj"
+  key_pair_name   = "new-ec2-key"
 }
