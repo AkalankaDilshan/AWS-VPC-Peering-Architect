@@ -30,7 +30,7 @@ module "financial_vpc" {
 module "server_sg_financial" {
   source  = "./modules/security_group"
   sg_name = "financial_ec2_sg"
-  vpc_id  = module.financial_vpc.id
+  vpc_id  = module.financial_vpc.vpc_id
 }
 
 module "server_sg_markerting" {
