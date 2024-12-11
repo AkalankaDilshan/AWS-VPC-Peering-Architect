@@ -10,6 +10,8 @@ data "aws_ami" "ubuntu" {
     name   = "virtualization-type"
     values = ["hvm"]
   }
+
+  owners = ["099720109477"]
 }
 
 resource "aws_instance" "server_instance" {
@@ -22,11 +24,12 @@ resource "aws_instance" "server_instance" {
   root_block_device {
     volume_type = var.ebs_volume_type
     volume_size = var.ebs_volume_size
+    encrypted   = true
   }
 
   key_name = var.key_pair_name
 
   tags = {
-    Name = "${var.instance_name}"
+    Name = var.instance_name
   }
 }
