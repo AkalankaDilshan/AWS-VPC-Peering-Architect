@@ -38,3 +38,11 @@ module "server_sg_markerting" {
   sg_name = "markerting_ec2_sg"
   vpc_id  = module.markerting_vpc.vpc_id
 }
+
+# module "marketing_instance" {
+#   source = "./modules/EC2"
+#   instance_type = "t3.micro"
+#   instance_name = "markerting_server"
+#   vpc_security_group_ids= module.server_sg_markerting.id
+
+# }
