@@ -26,3 +26,15 @@ module "financial_vpc" {
   peer_vpc_id          = module.markerting_vpc.vpc_id
   peering_vpc_name     = module.markerting_vpc.vpc_name
 }
+
+module "server_sg_financial" {
+  source  = "./modules/security_group"
+  sg_name = "financial_ec2_sg"
+  vpc_id  = module.financial_vpc.id
+}
+
+module "server_sg_markerting" {
+  source  = "./modules/security_group"
+  sg_name = "markerting_ec2_sg"
+  vpc_id  = module.markerting_vpc.vpc_id
+}
