@@ -39,10 +39,26 @@ module "server_sg_markerting" {
   vpc_id  = module.markerting_vpc.vpc_id
 }
 
-# module "marketing_instance" {
-#   source = "./modules/EC2"
-#   instance_type = "t3.micro"
-#   instance_name = "markerting_server"
-#   vpc_security_group_ids= module.server_sg_markerting.id
+module "marketing_instance" {
+  source          = "./modules/EC2"
+  instance_type   = "t3.micro"
+  instance_name   = "markerting_server"
+  subnet_id       = module.markerting_vpc.public_subnet_id
+  security_group  = module.server_sg_markerting.sg_id
+  allow_public_ip = true
+  ebs_volume_size = 8
+  ebs_volume_type = "gp2"
+  key_pair_name   = "dfghj"
+}
 
-# }
+module "financial_instance" {
+  source          = "./modules/EC2"
+  instance_type   = "t3.micro"
+  instance_name   = "financial_server"
+  subnet_id       = module.financial_vpc.public_subnet_id
+  security_group  = module.server_sg_financial.sg_id
+  allow_public_ip = true
+  ebs_volume_size = 8
+  ebs_volume_type = "gp2"
+  key_pair_name   = "dfghj"
+}
