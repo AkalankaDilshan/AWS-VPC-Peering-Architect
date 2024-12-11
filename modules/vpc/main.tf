@@ -51,7 +51,7 @@ resource "aws_route" "pulic_route" {
 resource "aws_eip" "elastic_IP_address" {
   count = var.enable_NAT_gateway ? 1 : 0
 
-  vpc = true
+  domain = "vpc"
   tags = {
     Name = "${var.vpc_name}-vpc-natGateway-EIP"
   }
