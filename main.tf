@@ -37,7 +37,7 @@ module "server_sg_financial" {
   source        = "./modules/security_group"
   sg_name       = "financial_ec2_sg"
   vpc_id        = module.financial_vpc.vpc_id
-  peer_vpc_cidr = module.markerting_vpc.vpc_cidr
+  peer_vpc_cidr = [module.markerting_vpc.vpc_cidr]
 }
 
 module "server_sg_markerting" {
