@@ -9,8 +9,8 @@ module "markerting_vpc" {
   public_subnet_cidrs  = ["10.10.1.0/24"]
   private_subnet_cidrs = ["10.10.4.0/24"]
   enable_NAT_gateway   = false
-  peer_vpc_cidr        = [module.financial_vpc.vpc_cidr]
-  peering_con_id       = [module.vpc_peering_connection.peering_connection_id]
+  peer_vpc_cidr        = [module.administrative_vpc.vpc_cidr]
+  peering_con_id       = [module.vpc_peering_connection_A2M.peering_connection_id]
 }
 
 module "financial_vpc" {
@@ -21,31 +21,60 @@ module "financial_vpc" {
   public_subnet_cidrs  = ["173.31.1.0/24"]
   private_subnet_cidrs = ["173.31.4.0/24"]
   enable_NAT_gateway   = false
-  peer_vpc_cidr        = [module.markerting_vpc.vpc_cidr]
-  peering_con_id       = [module.vpc_peering_connection.peering_connection_id]
+  peer_vpc_cidr        = [module.administrative_vpc.vpc_cidr]
+  peering_con_id       = [module.vpc_peering_connection_A2F.peering_connection_id]
 }
 
-module "vpc_peering_connection" {
+module "administrative_vpc" {
+  source               = "./modules/vpc"
+  vpc_name             = "Administrative-VPC"
+  cidr_block           = "192.168.0.0/16"
+  availability_zones   = ["eu-north-1a"]
+  public_subnet_cidrs  = ["192.168.1.0/24"]
+  private_subnet_cidrs = ["192.168.4.0/24"]
+  enable_NAT_gateway   = false
+  peer_vpc_cidr        = [module.markerting_vpc.vpc_cidr, module.financial_vpc.vpc_cidr]
+  peering_con_id       = [module.vpc_peering_connection_A2M.peering_connection_id, module.vpc_peering_connection_A2F.peering_connection_id]
+
+}
+
+module "vpc_peering_connection_A2M" {
   source           = "./modules/vpc_peering"
-  vpc_name         = module.markerting_vpc.vpc_name
-  vpc_id           = module.markerting_vpc.vpc_id
+  vpc_name         = module.administrative_vpc.vpc_name
+  vpc_id           = module.administrative_vpc.vpc_id
+  peering_vpc_name = module.markerting_vpc.vpc_name
+  peering_vpc_id   = module.markerting_vpc.vpc_id
+}
+
+module "vpc_peering_connection_A2F" {
+  source           = "./modules/vpc_peering"
+  vpc_name         = module.administrative_vpc.vpc_name
+  vpc_id           = module.administrative_vpc.vpc_id
   peering_vpc_name = module.financial_vpc.vpc_name
   peering_vpc_id   = module.financial_vpc.vpc_id
-}
-
-module "server_sg_financial" {
-  source        = "./modules/security_group"
-  sg_name       = "financial_ec2_sg"
-  vpc_id        = module.financial_vpc.vpc_id
-  peer_vpc_cidr = [module.markerting_vpc.vpc_cidr]
 }
 
 module "server_sg_markerting" {
   source        = "./modules/security_group"
   sg_name       = "markerting_ec2_sg"
   vpc_id        = module.markerting_vpc.vpc_id
-  peer_vpc_cidr = [module.financial_vpc.vpc_cidr]
+  peer_vpc_cidr = [module.administrative_vpc.vpc_cidr]
 }
+
+module "server_sg_financial" {
+  source        = "./modules/security_group"
+  sg_name       = "financial_ec2_sg"
+  vpc_id        = module.financial_vpc.vpc_id
+  peer_vpc_cidr = [module.administrative_vpc.vpc_cidr]
+}
+
+module "server_sg_administrative" {
+  source        = "./modules/security_group"
+  sg_name       = "administrative_ec2_sg"
+  vpc_id        = module.administrative_vpc.vpc_id
+  peer_vpc_cidr = [module.markerting_vpc.vpc_cidr, module.financial_vpc.vpc_cidr]
+}
+
 
 module "marketing_instance" {
   source          = "./modules/EC2"
@@ -65,6 +94,18 @@ module "financial_instance" {
   instance_name   = "financial_server"
   subnet_id       = module.financial_vpc.public_subnet_id[0]
   security_group  = module.server_sg_financial.sg_id
+  allow_public_ip = true
+  ebs_volume_size = 8
+  ebs_volume_type = "gp2"
+  key_pair_name   = "new-ec2-key"
+}
+
+module "administrativ_instance" {
+  source          = "./modules/EC2"
+  instance_type   = "t3.micro"
+  instance_name   = "administrativ_server"
+  subnet_id       = module.administrative_vpc.public_subnet_id[0]
+  security_group  = module.server_sg_administrative.sg_id
   allow_public_ip = true
   ebs_volume_size = 8
   ebs_volume_type = "gp2"
