@@ -21,8 +21,8 @@ module "financial_vpc" {
   public_subnet_cidrs  = ["172.0.1.0/24"]
   private_subnet_cidrs = ["172.0.4.0/24"]
   enable_NAT_gateway   = false
-  peer_vpc_cidr        = module.markerting_vpc.vpc_id
-  peering_con_id       = module.markerting_vpc.peering_connection_id
+  peer_vpc_cidr        = module.markerting_vpc.vpc_cidr
+  peering_con_id       = module.vpc_peering_connection.peering_connection_id
 }
 
 module "vpc_peering_connection" {
