@@ -8,7 +8,7 @@ module "markerting_vpc" {
   availability_zones   = ["eu-north-1a"]
   public_subnet_cidrs  = ["10.0.1.0/24"]
   private_subnet_cidrs = ["10.0.4.0/24"]
-  enable_NAT_gateway   = true
+  enable_NAT_gateway   = false
   vpc_peering          = true
   peer_vpc_id          = module.financial_vpc.vpc_id
   peering_vpc_name     = module.financial_vpc.vpc_name
@@ -21,8 +21,8 @@ module "financial_vpc" {
   availability_zones   = ["eu-north-1a"]
   public_subnet_cidrs  = ["172.0.1.0/24"]
   private_subnet_cidrs = ["172.0.4.0/24"]
-  enable_NAT_gateway   = true
-  vpc_peering          = true
+  enable_NAT_gateway   = false
+  vpc_peering          = false
   peer_vpc_id          = module.markerting_vpc.vpc_id
   peering_vpc_name     = module.markerting_vpc.vpc_name
 }
