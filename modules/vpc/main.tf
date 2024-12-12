@@ -50,7 +50,7 @@ resource "aws_route" "pulic_route" {
 
 resource "aws_route" "pulic_route_vpc_peering" {
   route_table_id            = aws_route_table.public_rt.id
-  destination_cidr_block    = [var.peer_vpc_cidr]
+  destination_cidr_block    = var.peer_vpc_cidr
   vpc_peering_connection_id = var.peering_con_id
 }
 
