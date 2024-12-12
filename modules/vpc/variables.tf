@@ -33,9 +33,9 @@ variable "enable_NAT_gateway" {
   description = "NAT gateway available or not"
   default     = false
 }
-variable "peer_vpc_id" {
+variable "peer_vpc_cidr" {
   type        = string
-  description = "peering vpc id"
+  description = "peering vpc cidr"
 }
 variable "peering_con_id" {
   type        = string

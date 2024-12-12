@@ -12,11 +12,11 @@ variable "peering_vpc_id" {
   description = "peering vpc id"
 }
 
-variable "vpc_peering" {
-  type        = bool
-  description = "VPC peering connection available or not"
-  default     = false
-}
+# variable "vpc_peering" {
+#   type        = bool
+#   description = "VPC peering connection available or not"
+#   default     = false
+# }
 
 variable "peering_vpc_name" {
   type        = string
