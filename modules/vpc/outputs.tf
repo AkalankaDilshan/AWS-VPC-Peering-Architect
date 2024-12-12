@@ -14,3 +14,7 @@ output "public_subnet_id" {
 output "private_subnet_id" {
   value = aws_subnet.private_subnet[*].id
 }
+
+output "peering_connection_id" {
+  value = aws_vpc_peering_connection.peering_connection.id
+}

@@ -48,6 +48,12 @@ resource "aws_route" "pulic_route" {
   gateway_id             = aws_internet_gateway.igw.id
 }
 
+resource "aws_route" "pulic_route_vpc_peering" {
+  route_table_id            = aws_route_table.public_rt.id
+  destination_cidr_block    = [var.peer_vpc_id]
+  vpc_peering_connection_id = var.peering_con_id
+}
+
 resource "aws_eip" "elastic_IP_address" {
   count = var.enable_NAT_gateway ? 1 : 0
 

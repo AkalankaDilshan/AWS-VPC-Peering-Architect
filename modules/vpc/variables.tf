@@ -50,3 +50,8 @@ variable "peer_vpc_id" {
   type        = string
   description = "peering vpc id"
 }
+
+variable "peering_con_id" {
+  type        = string
+  description = "vpc peering connection id"
+}

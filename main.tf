@@ -12,6 +12,7 @@ module "markerting_vpc" {
   vpc_peering          = true
   peer_vpc_id          = module.financial_vpc.vpc_id
   peering_vpc_name     = module.financial_vpc.vpc_name
+  peering_con_id       = module.financial_vpc.peering_connection_id
 }
 
 module "financial_vpc" {
@@ -25,18 +26,21 @@ module "financial_vpc" {
   vpc_peering          = false
   peer_vpc_id          = module.markerting_vpc.vpc_id
   peering_vpc_name     = module.markerting_vpc.vpc_name
+  peering_con_id       = module.me
 }
 
 module "server_sg_financial" {
-  source  = "./modules/security_group"
-  sg_name = "financial_ec2_sg"
-  vpc_id  = module.financial_vpc.vpc_id
+  source      = "./modules/security_group"
+  sg_name     = "financial_ec2_sg"
+  vpc_id      = module.financial_vpc.vpc_id
+  peer_vpc_id = module.markerting_vpc.vpc_id
 }
 
 module "server_sg_markerting" {
-  source  = "./modules/security_group"
-  sg_name = "markerting_ec2_sg"
-  vpc_id  = module.markerting_vpc.vpc_id
+  source      = "./modules/security_group"
+  sg_name     = "markerting_ec2_sg"
+  vpc_id      = module.markerting_vpc.vpc_id
+  peer_vpc_id = module.financial_vpc.vpc_id
 }
 
 module "marketing_instance" {
