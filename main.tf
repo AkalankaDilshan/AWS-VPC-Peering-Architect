@@ -34,17 +34,17 @@ module "vpc_peering_connection" {
 }
 
 module "server_sg_financial" {
-  source      = "./modules/security_group"
-  sg_name     = "financial_ec2_sg"
-  vpc_id      = module.financial_vpc.vpc_id
-  peer_vpc_id = module.markerting_vpc.vpc_id
+  source        = "./modules/security_group"
+  sg_name       = "financial_ec2_sg"
+  vpc_id        = module.financial_vpc.vpc_id
+  peer_vpc_cidr = module.markerting_vpc.vpc_cidr
 }
 
 module "server_sg_markerting" {
-  source      = "./modules/security_group"
-  sg_name     = "markerting_ec2_sg"
-  vpc_id      = module.markerting_vpc.vpc_id
-  peer_vpc_id = module.financial_vpc.vpc_id
+  source        = "./modules/security_group"
+  sg_name       = "markerting_ec2_sg"
+  vpc_id        = module.markerting_vpc.vpc_id
+  peer_vpc_cidr = module.financial_vpc.vpc_cidr
 }
 
 module "marketing_instance" {

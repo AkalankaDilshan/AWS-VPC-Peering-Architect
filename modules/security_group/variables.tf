@@ -8,7 +8,7 @@ variable "vpc_id" {
   description = "vpc id for ec2 instance"
 }
 
-variable "peer_vpc_id" {
+variable "peer_vpc_cidr" {
   type        = string
-  description = "other end VPC id"
+  description = "other end VPC cidr"
 }
