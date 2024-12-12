@@ -4,7 +4,7 @@ provider "aws" {
 module "markerting_vpc" {
   source               = "./modules/vpc"
   vpc_name             = "Marketing-VPC"
-  cidr_block           = "10.0.0.0/16"
+  cidr_block           = ["10.0.0.0/16"]
   availability_zones   = ["eu-north-1a"]
   public_subnet_cidrs  = ["10.0.1.0/24"]
   private_subnet_cidrs = ["10.0.4.0/24"]
@@ -16,7 +16,7 @@ module "markerting_vpc" {
 module "financial_vpc" {
   source               = "./modules/vpc"
   vpc_name             = "Financial-VPC"
-  cidr_block           = "172.0.0.0/16"
+  cidr_block           = ["172.0.0.0/16"]
   availability_zones   = ["eu-north-1a"]
   public_subnet_cidrs  = ["172.0.1.0/24"]
   private_subnet_cidrs = ["172.0.4.0/24"]
