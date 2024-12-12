@@ -76,6 +76,17 @@ resource "aws_route" "private_route" {
   nat_gateway_id         = aws_nat_gateway.nat_gateway[count.index].id
 }
 
+resource "aws_route_table_association" "public_RT_association" {
+  count          = length(aws_subnet.public_subnet)
+  subnet_id      = aws_subnet.public_subnet[count.index].index
+  route_table_id = aws_route_table.public_rt.id
+}
+
+resource "aws_route_table_association" "private_RT_association" {
+  count          = length(aws_subnet.private_subnet)
+  subnet_id      = aws_subnet.private_subnet[count.index].index
+  route_table_id = aws_route_table.private_rt.id
+}
 resource "aws_vpc_peering_connection" "peering_connection" {
   count       = var.vpc_peering ? 1 : 0
   vpc_id      = aws_vpc.main_vpc.id
@@ -147,3 +158,4 @@ resource "aws_network_acl_rule" "public_deny_all_inbound" {
 #   subnet_id      = each.value.id
 #   network_acl_id = aws_network_acl.public_ACL.id
 # }
+
