@@ -43,7 +43,7 @@ module "marketing_instance" {
   source          = "./modules/EC2"
   instance_type   = "t3.micro"
   instance_name   = "markerting_server"
-  subnet_id       = module.markerting_vpc.public_subnet_id
+  subnet_id       = module.markerting_vpc.public_subnet_id[0]
   security_group  = module.server_sg_markerting.sg_id
   allow_public_ip = true
   ebs_volume_size = 8
@@ -55,7 +55,7 @@ module "financial_instance" {
   source          = "./modules/EC2"
   instance_type   = "t3.micro"
   instance_name   = "financial_server"
-  subnet_id       = module.financial_vpc.public_subnet_id
+  subnet_id       = module.financial_vpc.public_subnet_id[0]
   security_group  = module.server_sg_financial.sg_id
   allow_public_ip = true
   ebs_volume_size = 8
