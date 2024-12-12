@@ -9,8 +9,8 @@ module "markerting_vpc" {
   public_subnet_cidrs  = ["10.10.1.0/24"]
   private_subnet_cidrs = ["10.10.4.0/24"]
   enable_NAT_gateway   = false
-  peer_vpc_cidr        = module.financial_vpc.vpc_cidr
-  peering_con_id       = module.vpc_peering_connection.peering_connection_id
+  peer_vpc_cidr        = [module.financial_vpc.vpc_cidr]
+  peering_con_id       = [module.vpc_peering_connection.peering_connection_id]
 }
 
 module "financial_vpc" {
@@ -21,8 +21,8 @@ module "financial_vpc" {
   public_subnet_cidrs  = ["173.31.1.0/24"]
   private_subnet_cidrs = ["173.31.4.0/24"]
   enable_NAT_gateway   = false
-  peer_vpc_cidr        = module.markerting_vpc.vpc_cidr
-  peering_con_id       = module.vpc_peering_connection.peering_connection_id
+  peer_vpc_cidr        = [module.markerting_vpc.vpc_cidr]
+  peering_con_id       = [module.vpc_peering_connection.peering_connection_id]
 }
 
 module "vpc_peering_connection" {
@@ -44,7 +44,7 @@ module "server_sg_markerting" {
   source        = "./modules/security_group"
   sg_name       = "markerting_ec2_sg"
   vpc_id        = module.markerting_vpc.vpc_id
-  peer_vpc_cidr = module.financial_vpc.vpc_cidr
+  peer_vpc_cidr = [module.financial_vpc.vpc_cidr]
 }
 
 module "marketing_instance" {
