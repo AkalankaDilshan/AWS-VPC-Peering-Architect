@@ -37,7 +37,7 @@ resource "aws_security_group_rule" "allow_https" {
   security_group_id = aws_security_group.web_server_sg.id
 }
 
-resource "aws_security_group_rule" "allow_https" {
+resource "aws_security_group_rule" "allow_all_trafic" {
   type              = "ingress"
   description       = "HTTPS ingress"
   from_port         = 0
