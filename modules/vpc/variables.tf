@@ -34,23 +34,10 @@ variable "enable_NAT_gateway" {
   default     = false
 }
 
-
-variable "vpc_peering" {
-  type        = bool
-  description = "VPC peering connection available or not"
-  default     = false
-}
-
-variable "peering_vpc_name" {
-  type        = string
-  description = "name for peering VPC"
-}
-
 variable "peer_vpc_id" {
   type        = string
   description = "peering vpc id"
 }
-
 variable "peering_con_id" {
   type        = string
   description = "vpc peering connection id"
