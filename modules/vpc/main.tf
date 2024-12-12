@@ -77,14 +77,14 @@ resource "aws_route" "private_route" {
 }
 
 resource "aws_route_table_association" "public_RT_association" {
-  count          = length(aws_subnet.public_subnet)
-  subnet_id      = aws_subnet.public_subnet[count.index].index
+  # count          = length(aws_subnet.public_subnet)
+  subnet_id      = element(aws_subnet.public_subnet[*].id, 0)
   route_table_id = aws_route_table.public_rt.id
 }
 
 resource "aws_route_table_association" "private_RT_association" {
-  count          = length(aws_subnet.private_subnet)
-  subnet_id      = aws_subnet.private_subnet[count.index].index
+  #count          = length(aws_subnet.private_subnet)
+  subnet_id      = element(aws_subnet.private_subnet[*].id, 0)
   route_table_id = aws_route_table.private_rt.id
 }
 resource "aws_vpc_peering_connection" "peering_connection" {
