@@ -1,11 +1,23 @@
 variable "instance_type" {
   type        = string
   description = "type for EC2 instance"
+  default     = "t2.micro"
 }
 
 variable "instance_name" {
   type        = string
   description = "EC2 instance name"
+}
+
+variable "ami_name_pattern" {
+  description = "the pattern to match the AMI name"
+  type        = string
+  default     = "amzn2-ami-hvm-*-x86_64-gp2"
+}
+variable "ami_architecture" {
+  description = "The pattern to match the AMI name"
+  type        = string
+  default     = "x86_64"
 }
 variable "subnet_id" {
   type        = string
