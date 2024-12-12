@@ -1,17 +1,17 @@
-data "aws_ami" "ubuntu" {
+data "aws_ami" "latest_ami" {
   most_recent = true
+  owners      = ["amazon"]
 
   filter {
     name   = "name"
-    values = ["ubuntu/images/hvm-ssd/ubuntu-xenial-16.04-amd64-server-*"]
+    values = [var.ami_name_pattern]
   }
 
   filter {
-    name   = "virtualization-type"
-    values = ["hvm"]
+    name   = "architecture"
+    values = [var.ami_name_pattern]
   }
 
-  owners = ["099720109477"]
 }
 
 resource "aws_instance" "server_instance" {
