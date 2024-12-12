@@ -33,7 +33,6 @@ variable "enable_NAT_gateway" {
   description = "NAT gateway available or not"
   default     = false
 }
-
 variable "peer_vpc_id" {
   type        = string
   description = "peering vpc id"

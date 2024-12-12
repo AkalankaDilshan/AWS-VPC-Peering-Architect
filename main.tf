@@ -12,7 +12,7 @@ module "markerting_vpc" {
   vpc_peering          = true
   peer_vpc_id          = module.financial_vpc.vpc_id
   peering_vpc_name     = module.financial_vpc.vpc_name
-  peering_con_id       = module.financial_vpc.peering_connection_id
+  peering_con_id       = module.markerting_vpc.peering_connection_id
 }
 
 module "financial_vpc" {
@@ -26,7 +26,7 @@ module "financial_vpc" {
   vpc_peering          = false
   peer_vpc_id          = module.markerting_vpc.vpc_id
   peering_vpc_name     = module.markerting_vpc.vpc_name
-  peering_con_id       = module.me
+  peering_con_id       = module.markerting_vpc.peering_connection_id
 }
 
 module "server_sg_financial" {
