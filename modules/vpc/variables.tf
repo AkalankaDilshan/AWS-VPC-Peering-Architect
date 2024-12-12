@@ -34,10 +34,10 @@ variable "enable_NAT_gateway" {
   default     = false
 }
 variable "peer_vpc_cidr" {
-  type        = string
+  type        = list(string)
   description = "peering vpc cidr"
 }
 variable "peering_con_id" {
-  type        = string
+  type        = list(string)
   description = "vpc peering connection id"
 }
