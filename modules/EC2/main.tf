@@ -1,18 +1,31 @@
-data "aws_ami" "latest_ami" {
-  most_recent = true
-  owners      = ["amazon"]
+# data "aws_ami" "latest_ami" {
+#   most_recent = true
+#   owners      = ["amazon"]
 
+#   filter {
+#     name   = "name"
+#     values = [var.ami_name_pattern]
+#   }
+
+#   filter {
+#     name   = "architecture"
+#     values = [var.ami_name_pattern]
+#   }
+
+#}
+data "aws_ami" "latest_ami" {
+  owners      = ["amazon"]
+  most_recent = true
   filter {
     name   = "name"
-    values = [var.ami_name_pattern]
+    values = ["amzn2-ami-hvm-*-x86_64-gp2"]
   }
-
   filter {
-    name   = "architecture"
-    values = [var.ami_name_pattern]
+    name   = "state"
+    values = ["available"]
   }
-
 }
+
 
 resource "aws_instance" "server_instance" {
   ami                         = data.aws_ami.latest_ami.id
