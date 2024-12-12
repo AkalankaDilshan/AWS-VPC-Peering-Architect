@@ -9,6 +9,6 @@ variable "vpc_id" {
 }
 
 variable "peer_vpc_cidr" {
-  type        = string
+  type        = list(string)
   description = "other end VPC cidr"
 }

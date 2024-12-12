@@ -37,13 +37,15 @@ resource "aws_security_group_rule" "allow_https" {
   security_group_id = aws_security_group.web_server_sg.id
 }
 
-resource "aws_security_group_rule" "allow_all_trafic" {
+resource "aws_security_group_rule" "allow_all_trafic_peer_vpc" {
+  for_each = toset(var.peer_vpc_cidr)
+
   type              = "ingress"
-  description       = "HTTPS ingress"
+  description       = "Allow all traffic ingress"
   from_port         = 0
   to_port           = 0
   protocol          = "-1"
-  cidr_blocks       = [var.peer_vpc_cidr]
+  cidr_blocks       = each.value
   security_group_id = aws_security_group.web_server_sg.id
 }
 
